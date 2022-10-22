@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "it-cost-my-time.dll": "sha256-jVhHSuNfK98ChV9UuZD9ulCYcQ60972ujyW1psEES10=",
+      "it-cost-my-time.dll": "sha256-fZw6NlPvU5i1zkuiQK3l81d1smHbf4X4c\/F3cAQ5c7c=",
       "Microsoft.AspNetCore.Components.dll": "sha256-yCbSaHTJGqSpWHCImWBwLdQV35KXQYKdW3\/QmZqcz+Y=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-YXmAsa6knjFOgANzSAaKoG+QZtUqqFqtGOBSErZywuA=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-dS4TFc1mLF8fnKW+I8xyOnB9uSpNNUc33fthd0NDE8I=",

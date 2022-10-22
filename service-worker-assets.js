@@ -45,11 +45,11 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-p9XqAwH4MEurve\/G2vfXaM\/uJrh4NZNr5BIh\/7X\/x0o=",
+      "hash": "sha256-YivchZ6g6unK8TjGwtR+OcxdEZLPgnNLiuQl+elj2zM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-jVhHSuNfK98ChV9UuZD9ulCYcQ60972ujyW1psEES10=",
+      "hash": "sha256-fZw6NlPvU5i1zkuiQK3l81d1smHbf4X4c\/F3cAQ5c7c=",
       "url": "_framework\/it-cost-my-time.dll"
     },
     {
@@ -225,5 +225,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "IJ+GEFOC"
+  "version": "Pyviu070"
 };
