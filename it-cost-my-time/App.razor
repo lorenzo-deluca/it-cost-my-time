@@ -1,0 +1,130 @@
+﻿<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
+
+    <MudBadge Icon="@Icons.Material.Filled.Lock" Color="Color.Error" Overlap="true" Bordered="true">
+        <MudButton Color="Color.Warning" Variant="Variant.Filled" DisableElevation="true">Save Settings (in local)</MudButton>
+    </MudBadge>
+
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>
+
+<MudExpansionPanels DisableBorders="true" Elevation="0" MultiExpansion="true">
+    <MudExpansionPanel IsInitiallyExpanded="true">
+
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                <MudText>Income Configuration</MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+
+            <MudSwitch @bind-Checked="@IncomeTypeSelect" Label="Income Type" Color="Color.Success" />
+            <MudNumericField DefaultFocus="DefaultFocus" @bind-Value="Income" @bind-Label="@IncomeType" Variant="Variant.Outlined" Step=".2M" />
+            <MudSlider @bind-Value="WorkingDays" Min="1" Max="7" Step="1" Color="Color.Info">Working Days <b>@WorkingDays.ToString()</b> (for week)</MudSlider>
+            <MudSlider @bind-Value="WorkingHours" Min="1" Max="24" Step="1" Color="Color.Warning">Working Hours <b>@WorkingHours.ToString()</b> (h/day)</MudSlider>
+
+            <MudSlider Size="Size.Large" Min="1" Max="100" Step="1" @bind-Value="@SavingRate">Saving Rate <b>@SavingRate.ToString()</b> %</MudSlider>
+        </ChildContent>
+
+    </MudExpansionPanel>
+
+    <MudExpansionPanel IsInitiallyExpanded="true">
+
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                <MudText>Saving Calculation</MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            Yearly Saving @YearlySavings (income @YearlyIncome)<br />
+            Monthly Saving @(YearlySavings / 12) (income @(YearlyIncome / 12) ) <br />
+
+            Daily Saving @(YearlySavings / TotalWorkingDays) (income @(YearlyIncome / TotalWorkingDays) ) <br />
+            Hourly Saving @(YearlySavings / TotalWorkingHours)  (income @(YearlyIncome / TotalWorkingHours)  ) <br />
+
+        </ChildContent>
+
+    </MudExpansionPanel>
+
+</MudExpansionPanels>
+
+<MudTextField @bind-Value="Amount" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
+
+<MudText Typo="Typo.h5">This item cost you </MudText>
+<MudText Typo="Typo.h1">@(Amount / (YearlySavings / TotalWorkingHours)) </MudText>
+<MudText Typo="Typo.h6">working hours saving </MudText>
+<MudText Typo="Typo.h5">or @(Amount / (YearlySavings / TotalWorkingDays)) working days saving</MudText>
+
+@code {
+    public decimal Income { get; set; } = 30000;
+    public int WorkingDays = 5;
+    public int WorkingHours = 8;
+    public int PayMonths = 13;
+
+    public decimal SavingRate = 50;
+    public decimal Amount = 100;
+    public bool IncomeTypeSelect { get; set; } = true;
+
+    public string IncomeType
+    {
+        get
+        {
+            return (IncomeTypeSelect ?
+                "Yearly Income (after tax)"
+            :
+                "Monthly Income (after tax)");
+        }
+
+        set
+        {
+            value = null;
+        }
+    }
+
+    private decimal YearlyIncome
+    {
+        get
+        {
+            if (IncomeTypeSelect)
+            {
+                return Income;
+            }
+            else
+            {
+                return (Income * PayMonths);
+            }
+        }
+    }
+
+    private decimal YearlySavings
+    {
+        get
+        {
+            return (decimal)(YearlyIncome / 100) * SavingRate;
+        }
+    }
+
+    private decimal TotalWorkingDays
+    {
+        get
+        {
+            return (WorkingDays * 4 * 12);
+        }
+    }
+
+    private decimal TotalWorkingHours
+    {
+        get
+        {
+            return (TotalWorkingDays * WorkingHours);
+        }
+    }
+
+
+}

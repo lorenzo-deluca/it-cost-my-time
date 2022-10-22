@@ -1,0 +1,60 @@
+name: Deploy to GitHub pages
+
+# Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deploy-to-github-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v3
+      
+      # Install .NET Core SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+          
+      # Install dotnet wasm buildtools workload
+      - name: Install .NET WASM Build Tools
+        run: dotnet workload install wasm-tools
+    
+      # Build APP
+      #- name: Restore dependencies
+      #  run: dotnet restore
+        
+      #- name: Build
+      #  run: dotnet build --no-restore
+        
+      - name: Publish
+        run: dotnet publish it-cost-my-time/it-cost-my-time.csproj -c Release -o dist/it-cost-my-time --nologo
+      
+      # change base tag in all html files to include subfolder
+      - name: Change base tag
+        working-directory: dist/it-cost-my-time/wwwroot
+        run: |
+          find . -name "*.html" | while read htmlFile; do
+              sed -i 's/<base href="\/"/<base href="\/it-cost-my-time\/"/g' $htmlFile
+          done
+          
+     # copy index.html to 404.html to serve the same file when a file is not found
+      - name: Copy index.html to 404.html
+        run: cp dist/it-cost-my-time/wwwroot/index.html dist/it-cost-my-time/wwwroot/404.html
+        
+      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+      - name: Add .nojekyll file
+        run: touch dist/it-cost-my-time/wwwroot/.nojekyll
+     
+      # Publish app on GitHub Pages
+      - name: Commit wwwroot to GitHub pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist/it-cost-my-time/wwwroot
