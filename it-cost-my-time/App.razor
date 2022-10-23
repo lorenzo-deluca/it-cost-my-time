@@ -13,9 +13,9 @@
 <MudLayout>
 
     <MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="DeleteData" Color="Color.Error">Delete Data</MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="DeleteData" Color="Color.Error">Reset</MudButton>
         <MudSpacer />
-        <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Dense="true" ContentAlignment="HorizontalAlignment.Center" Elevation="10">Data are saved only in your browser!</MudAlert>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Dense="true" ContentAlignment="HorizontalAlignment.Center" Elevation="10">Data saved only locally ;)</MudAlert>
         <MudSpacer />
         <MudSelect @onchange="UpdateConfiguration" T="string" Label="Currency" @bind-Value="@configuration.Currency">
             <MudSelectItem Value="@("€")" />
@@ -69,9 +69,9 @@
             </TitleContent>
             <ChildContent>
                 Yearly Saving <b>@CurrencyFormatter(calculateService.YearlySavings) </b> (income @CurrencyFormatter(configuration.YearlyIncome))  <br />
-                Monthly Saving <b>@CurrencyFormatter(calculateService.MonthlySavings)</b> (income @CurrencyFormatter(configuration.MonthlyIncome)  <br />
-                Daily Saving <b>@CurrencyFormatter(calculateService.DailySaving)</b> (income @CurrencyFormatter(calculateService.DailyIncome) <br />
-                Hourly Saving <b>@CurrencyFormatter(calculateService.HourlySaving)</b> (income @CurrencyFormatter(calculateService.HourlyIncome) <br />
+                Monthly Saving <b>@CurrencyFormatter(calculateService.MonthlySavings)</b> (income @CurrencyFormatter(configuration.MonthlyIncome))  <br />
+                Daily Saving <b>@CurrencyFormatter(calculateService.DailySaving)</b> (income @CurrencyFormatter(calculateService.DailyIncome)) <br />
+                Hourly Saving <b>@CurrencyFormatter(calculateService.HourlySaving)</b> (income @CurrencyFormatter(calculateService.HourlyIncome)) <br />
             </ChildContent>
         </MudExpansionPanel>
     </MudExpansionPanels>
@@ -99,7 +99,7 @@
         </MudCardContent>
     </MudCard>
 
-    <MudAppBar Bottom="true" Fixed="true" Color="Color.Secondary" Elevation="1">
+    <MudAppBar Bottom="true" Fixed="false" Color="Color.Secondary" Elevation="1">
         <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Warning" Class="ma-4" Size="Size.Small" T="bool" Label=" Light/Dark Mode" />
         <MudSpacer />
         <a href="mailto:me@lorenzodeluca.dev">me@lorenzodeluca.dev</a>
