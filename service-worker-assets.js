@@ -1,14 +1,6 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-4NSGx7UErFncC3t4HlH+roYvkBmNhBdOz1ZJppgvqY4=",
-      "url": "android-chrome-192x192.png"
-    },
-    {
-      "hash": "sha256-VJO3xbO87jTBMe8WaflfT1AQ5XkdU+Z2wexJaklJu24=",
-      "url": "android-chrome-512x512.png"
-    },
-    {
       "hash": "sha256-dGsoJDH1roTKj\/l3Ltwv\/wUoIsbDl4i+LPDp2lk6mMY=",
       "url": "apple-touch-icon.png"
     },
@@ -29,7 +21,23 @@
       "url": "favicon.png"
     },
     {
-      "hash": "sha256-q\/pfrBLzE3zOk3FX0qr7Oqm2U+EaWViKXmJDLH3Ws9c=",
+      "hash": "sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=",
+      "url": "font-awesome\/css\/all.min.css"
+    },
+    {
+      "hash": "sha256-anaeGLBoWXUeqiJZBEpv92493NZXKlFtjOOi17jHU44=",
+      "url": "font-awesome\/js\/all.min.js"
+    },
+    {
+      "hash": "sha256-4NSGx7UErFncC3t4HlH+roYvkBmNhBdOz1ZJppgvqY4=",
+      "url": "icon-192.png"
+    },
+    {
+      "hash": "sha256-VJO3xbO87jTBMe8WaflfT1AQ5XkdU+Z2wexJaklJu24=",
+      "url": "icon-512.png"
+    },
+    {
+      "hash": "sha256-mL2X9ZwGFlfWnWRC3fwP0NPYCKhnr2CcVeGJaL6hn3M=",
       "url": "index.html"
     },
     {
@@ -249,5 +257,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "jbObh02J"
+  "version": "Dxiw\/IQj"
 };
