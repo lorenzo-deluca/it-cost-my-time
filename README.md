@@ -12,6 +12,8 @@ If you like this project you can support me with :coffee: or simply put a :star:
 
 > **disclaimer** the application runs entirely client-side Web Assembly, the data you enter will be saved within your browser's Local Storage, no data is sent to remote servers!
 
+![App Screenshot](/images/app-screen.png)
+
 ## Income
 You will need to enter parameters to account your **income** (after tax): 
 - **monthly** in these case you will be able to enter the **number of months** pay (by default 13)
@@ -28,7 +30,7 @@ Here you need to state how much of your income you can save as a percentage (inc
 Finally here you have to say how much the item you would like to buy costs, the application will calculate how many hours or days of work (of savings) it will cost you.
 By changing all the other values you will be able to see how much the time cost of the object varies as the parameters change.
 
-Once you have saved your data you can call up the application by entering the price of an item by entering it in the "amount" parameter (?amount=<price>)  [https://lorenzo-deluca.github.io/it-cost-my-time?amount=1500](like this){:target="_blank"}
+Once you have saved your data you can call up the application by entering the price of an item by entering it in the "amount" parameter (?amount=<price>)  [https://lorenzo-deluca.github.io/it-cost-my-time?amount=1500](like this)
 
 ## License
 GNU AGPLv3 © [Lorenzo De Luca][https://lorenzodeluca.dev]
