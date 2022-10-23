@@ -1,93 +1,136 @@
-﻿<MudThemeProvider />
-<MudDialogProvider />
+﻿<MudDialogProvider />
 <MudSnackbarProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
 @using it_cost_my_time.Entities;
 @using it_cost_my_time.Services;
 @page "/"
 @inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
-
     <MudBadge Icon="@Icons.Material.Filled.Lock" Color="Color.Error" Overlap="true" Bordered="true">
         <MudButton Color="Color.Warning" Variant="Variant.Filled" DisableElevation="true">Save Settings (on local browser)</MudButton>
     </MudBadge>
 
     <MudSpacer />
+    <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" Size="Size.Small" T="bool" Label="Toggle Light/Dark Mode" />
+    <MudSpacer />
+
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Target="_blank" Href="https://github.com/lorenzo-deluca/it-cost-my-time" />
 </MudAppBar>
 
-<MudExpansionPanels DisableBorders="true" Elevation="0" MultiExpansion="true">
-    <MudExpansionPanel IsInitiallyExpanded="true">
+<MudPaper Width="100%">
+    <MudContainer MaxWidth="MaxWidth.Medium">
+     
+    <MudExpansionPanels DisableBorders="false" Elevation="0" MultiExpansion="true">
+        <MudExpansionPanel IsInitiallyExpanded="true">
 
-        <TitleContent>
-            <div class="d-flex">
-                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
-                <MudText>Income Configuration</MudText>
-            </div>
-        </TitleContent>
-        <ChildContent>
+            <TitleContent>
+                <div class="d-flex">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                    <MudText>Income Configuration</MudText>
+                </div>
+            </TitleContent>
+            <ChildContent>
 
-            <MudSwitch @bind-Checked="@configuration.IncomeTypeSelect" Label="Income Type" Color="Color.Success" />
-            <MudNumericField DefaultFocus="DefaultFocus" @bind-Value="configuration.Income" @bind-Label="@configuration.IncomeType" Variant="Variant.Outlined" Step=".2M" />
-            <MudSlider @bind-Value="configuration.WorkingDays" Min="1" Max="7" Step="1" Color="Color.Info">Working Days <b>@configuration.WorkingDays.ToString()</b> (for week)</MudSlider>
-            <MudSlider @bind-Value="configuration.WorkingHours" Min="1" Max="24" Step="1" Color="Color.Warning">Working Hours <b>@configuration.WorkingHours.ToString()</b> (h/day)</MudSlider>
+                <MudSwitch @onchange="UpdateConfiguration" @bind-Checked="@configuration.IncomeTypeSelect" Label="Income Type" Color="Color.Success" />
+                <MudNumericField @onchange="UpdateConfiguration" DefaultFocus="DefaultFocus" @bind-Value="configuration.Income" @bind-Label="@configuration.IncomeType" Variant="Variant.Outlined" Step=".2M" />
+                @if (!configuration.IncomeTypeSelect)
+                {
+                    <MudSelect T="int" Label="Monthly Payments" Clearable="false" @onchange="UpdateConfiguration" @bind-Value="@configuration.PayMonths">
+                        @for (int month = 10; month <= 15; month++)
+                        {
+                            <MudSelectItem Value="@month" />
+                        }
+                    </MudSelect>
+                }
+                <MudSlider @onchange="UpdateConfiguration" @bind-Value="configuration.WorkingDays" Min="1" Max="7" Step="1" Color="Color.Info">Working Days <b>@configuration.WorkingDays.ToString()</b> (for week)</MudSlider>
+                <MudSlider @onchange="UpdateConfiguration" @bind-Value="configuration.WorkingHours" Min="1" Max="24" Step="1" Color="Color.Warning">Working Hours <b>@configuration.WorkingHours.ToString()</b> (h/day)</MudSlider>
 
-            <MudSlider Size="Size.Large" Min="1" Max="100" Step="1" @bind-Value="@configuration.SavingRate">Saving Rate <b>@configuration.SavingRate.ToString()</b> %</MudSlider>
-        </ChildContent>
+                <MudSlider @onchange="UpdateConfiguration" Size="Size.Large" Min="1" Max="100" Step="1" @bind-Value="@configuration.SavingRate">Saving Rate <b>@configuration.SavingRate.ToString()</b> %</MudSlider>
+            </ChildContent>
 
-    </MudExpansionPanel>
+        </MudExpansionPanel>
 
-    <MudExpansionPanel IsInitiallyExpanded="true">
+        <MudExpansionPanel IsInitiallyExpanded="true">
 
-        <TitleContent>
-            <div class="d-flex">
-                <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
-                <MudText>Saving Calculation</MudText>
-            </div>
-        </TitleContent>
-        <ChildContent>
-            Yearly Saving @calculateService.YearlySavings (income @calculateService.YearlyIncome<br />
-            Monthly Saving @calculateService.MonthlySavings (income @calculateService.MonthlyIncome) <br />
+            <TitleContent>
+                <div class="d-flex">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                    <MudText>Saving Calculation</MudText>
+                </div>
+            </TitleContent>
+            <ChildContent>
+                    Yearly Saving <b>@calculateService.YearlySavings.ToString("0.00")</b> (income @calculateService.YearlyIncome.ToString("0.00")) <br />
+                    Monthly Saving <b>@calculateService.MonthlySavings.ToString("0.00")</b> (income @calculateService.MonthlyIncome.ToString("0.00")) <br />
 
-            Daily Saving @calculateService.DailySaving (income @calculateService.DailyIncome ) <br />
-            Hourly Saving @calculateService.HourlySaving  (income @calculateService.HourlyIncome) <br />
+                    Daily Saving <b>@calculateService.DailySaving.ToString("0.00")</b> (income @calculateService.DailyIncome.ToString("0.00")) <br />
+                    Hourly Saving <b>@calculateService.HourlySaving.ToString("0.00")</b>  (income @calculateService.HourlyIncome.ToString("0.00")) <br />
+            </ChildContent>
 
-        </ChildContent>
+        </MudExpansionPanel>
 
-    </MudExpansionPanel>
+    </MudExpansionPanels>
 
-</MudExpansionPanels>
+    <MudTextField @bind-Value="Amount" Size="Size.Large" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
 
-<MudTextField @bind-Value="Amount" Size="Size.Large" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
-
-<MudText Typo="Typo.h5">This item cost you </MudText>
-
-<MudText Typo="Typo.h1">@calculateService.CalculateItemTimeCost(Amount).hours </MudText>
-<MudText Typo="Typo.h6">working hours saving </MudText>
-<MudText Typo="Typo.h5">or @calculateService.CalculateItemTimeCost(Amount).days working days saving</MudText>
+    <MudText Typo="Typo.h5">This item cost you </MudText>
+        
+        @if (calculateService.CalculateItemTimeCost(Amount).hours > 40){
+            <MudText Typo="Typo.h1">@calculateService.CalculateItemTimeCost(Amount).days.ToString("0.00") </MudText>
+            <small>working days saving</small>
+        } else {
+            <MudText Typo="Typo.h1">@calculateService.CalculateItemTimeCost(Amount).hours.ToString("0.00")</MudText>
+            <small>working hours saving</small>
+        }     
+    </MudContainer>
+</MudPaper>
 
 @code {
+
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
 
     IncomeConfiguration configuration = new IncomeConfiguration();
     CalculateService calculateService;
 
     public decimal Amount = 100;
-    (decimal Hours, decimal Days) ItemCosts;
 
-    public App()
-    {
+    public EventCallback<ChangeEventArgs> ValueChanged { get; set; }
+
+    public App() {
         calculateService = new CalculateService(configuration);
     }
 
-    protected override void OnInitialized()
-    {
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
         string query = Navigation.ToAbsoluteUri(Navigation.Uri).Query;        
-        if (!string.IsNullOrWhiteSpace(query) && query.Split('?').Count() > 1 && query.Split('?')[1].Split('=').Count() > 0)
-        {
+        if (!string.IsNullOrWhiteSpace(query) && query.Split('?').Count() > 1 && query.Split('?')[1].Split('=').Count() > 0){
             // parse amount in url parameters
             Amount = decimal.TryParse(query.Split('?')[1].Split('=')[1], out Amount) ? Amount : 0;
         }
 
+        try
+        {
+            var readConfiguration = await localStorage.GetItemAsync<IncomeConfiguration>("IncomeConfiguration");
+            configuration.ReadConfiguration(readConfiguration);
+        }
+        catch
+        {
+
+        }
+    }
+
+
+    private void UpdateConfiguration()
+    {
+        localStorage.SetItemAsync<IncomeConfiguration>("IncomeConfiguration", configuration);
     }
 }
