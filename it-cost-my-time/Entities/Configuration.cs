@@ -1,20 +1,18 @@
-﻿using Blazored.LocalStorage;
-
-namespace it_cost_my_time.Entities
+﻿namespace it_cost_my_time.Entities
 {
     public class Configuration
     {
-        public decimal Income { get; set; } = 30000;
+        public decimal YearlyIncome { get; set; } = 30000;
+        public decimal MonthlyIncome { get; set; } = 0;
         public int WorkingDays { get; set; } = 5;
         public int WorkingHours { get; set; } = 8;
         public int PayMonths { get; set; } = 13;
         public decimal SavingRate { get; set; } = 50;
-
-        private bool _incomeType = true;
-
         public string Currency { get; set; } = "€";
 
-        public bool IncomeTypeSelect
+        //        public bool IncomeType { get; set; } = true;
+        private bool _incomeType = true;
+        public bool IncomeType
         {
             get
             {
@@ -24,32 +22,22 @@ namespace it_cost_my_time.Entities
             set
             {
                 if (_incomeType != value)
-                    Income = decimal.Round(value ? Income * PayMonths : Income / PayMonths, 2, MidpointRounding.AwayFromZero);
+                {
+                    if (value)
+                        YearlyIncome = decimal.Round(MonthlyIncome * PayMonths, 2, MidpointRounding.AwayFromZero);
+                    else
+                        MonthlyIncome = decimal.Round(YearlyIncome / PayMonths, 2, MidpointRounding.AwayFromZero);
+                }
 
                 _incomeType = value;
             } 
         }
 
-        public string IncomeType
-        {
-            get
-            {
-                return (IncomeTypeSelect ?
-                    "Yearly Income (after tax)"
-                :
-                    "Monthly Income (after tax)");
-            }
-
-            set
-            {
-                value = null;
-            }
-        }
-
         public void ReadConfiguration(Configuration configuration)
         {
-            Income = configuration.Income;
-            _incomeType = configuration.IncomeTypeSelect;
+            YearlyIncome = configuration.YearlyIncome;
+            MonthlyIncome = configuration.MonthlyIncome;
+            IncomeType = configuration.IncomeType;
             WorkingDays = configuration.WorkingDays;
             WorkingHours = configuration.WorkingHours;
             PayMonths = configuration.PayMonths;

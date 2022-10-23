@@ -2,6 +2,7 @@
 <MudSnackbarProvider />
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
+@using System.Globalization
 @using it_cost_my_time.Entities;
 @using it_cost_my_time.Services;
 @page "/"
@@ -12,7 +13,9 @@
 <MudLayout>
 
     <MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
-        <MudButton Color="Color.Warning" Variant="Variant.Filled" DisableElevation="true">It Cost Me Time :)</MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="DeleteData" Color="Color.Error">Delete Data</MudButton>
+        <MudSpacer />
+        <MudChip Color="Color.Success">It Cost Me Time, personal finance calculator</MudChip>
         <MudSpacer />
         <MudSelect @onchange="UpdateConfiguration" T="string" Label="Currency" @bind-Value="@configuration.Currency">
             <MudSelectItem Value="@("€")" />
@@ -34,16 +37,20 @@
                 </div>
             </TitleContent>
             <ChildContent>
-                <MudSwitch @onchange="UpdateConfiguration" @bind-Checked="@configuration.IncomeTypeSelect" Label="Income Type" Color="Color.Success" />
-                <MudNumericField @onchange="UpdateConfiguration" DefaultFocus="DefaultFocus" @bind-Value="configuration.Income" @bind-Label="@configuration.IncomeType" Variant="Variant.Outlined" Step=".2M" />
-                @if (!configuration.IncomeTypeSelect)
+                <MudSwitch @onchange="UpdateConfiguration" @bind-Checked="@configuration.IncomeType" Label="Income Type" Color="Color.Success" />
+                @if (!configuration.IncomeType)
                 {
+                    <MudNumericField @onchange="UpdateConfiguration" DefaultFocus="DefaultFocus" @bind-Value="configuration.MonthlyIncome" Label="Monthly Income (after tax)" Variant="Variant.Outlined" Step=".2M" Adornment="Adornment.End" AdornmentText="@configuration.Currency" AdornmentColor="Color.Info" />
                     <MudSelect T="int" Label="Monthly Payments" Clearable="false" @onchange="UpdateConfiguration" @bind-Value="@configuration.PayMonths">
                         @for (int month = 10; month <= 15; month++)
                         {
                             <MudSelectItem Value="@month" />
                         }
                     </MudSelect>
+                }
+                else
+                {
+                    <MudNumericField @onchange="UpdateConfiguration" DefaultFocus="DefaultFocus" @bind-Value="configuration.YearlyIncome" Label="Yearly Income (after tax)" Variant="Variant.Outlined" Step=".2M" Adornment="Adornment.End" AdornmentText="@configuration.Currency" AdornmentColor="Color.Info" />
                 }
                 <MudSlider @onchange="UpdateConfiguration" @bind-Value="configuration.WorkingDays" Min="1" Max="7" Step="1" Color="Color.Info">Working Days <b>@configuration.WorkingDays.ToString()</b> (for week)</MudSlider>
                 <MudSlider @onchange="UpdateConfiguration" @bind-Value="configuration.WorkingHours" Min="1" Max="24" Step="1" Color="Color.Warning">Working Hours <b>@configuration.WorkingHours.ToString()</b> (h/day)</MudSlider>
@@ -61,17 +68,18 @@
                 </div>
             </TitleContent>
             <ChildContent>
-                Yearly Saving <b>@calculateService.YearlySavings.ToString("0.00") @configuration.Currency</b> (income @calculateService.YearlyIncome.ToString("0.00") @configuration.Currency)  <br />
-                Monthly Saving <b>@calculateService.MonthlySavings.ToString("0.00") @configuration.Currency</b> (income @calculateService.MonthlyIncome.ToString("0.00") @configuration.Currency)  <br />
-                Daily Saving <b>@calculateService.DailySaving.ToString("0.00") @configuration.Currency</b> (income @calculateService.DailyIncome.ToString("0.00") @configuration.Currency) <br />
-                Hourly Saving <b>@calculateService.HourlySaving.ToString("0.00") @configuration.Currency</b> (income @calculateService.HourlyIncome.ToString("0.00") @configuration.Currency) <br />
+                Yearly Saving <b>@CurrencyFormatter(calculateService.YearlySavings) </b> (income @CurrencyFormatter(configuration.YearlyIncome))  <br />
+                Monthly Saving <b>@CurrencyFormatter(calculateService.MonthlySavings)</b> (income @CurrencyFormatter(configuration.MonthlyIncome)  <br />
+                Daily Saving <b>@CurrencyFormatter(calculateService.DailySaving)</b> (income @CurrencyFormatter(calculateService.DailyIncome) <br />
+                Hourly Saving <b>@CurrencyFormatter(calculateService.HourlySaving)</b> (income @CurrencyFormatter(calculateService.HourlyIncome) <br />
             </ChildContent>
         </MudExpansionPanel>
     </MudExpansionPanels>
 
     <MudCard>
+
         <MudCardContent>
-            <MudTextField @bind-Value="Amount" Size="Size.Large" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
+            <MudTextField @bind-Value="Amount" Size="Size.Large" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@configuration.Currency" AdornmentColor="Color.Info" Class="mx-12" />
         </MudCardContent>
 
         <MudCardContent>
@@ -141,9 +149,16 @@
         }
     }
 
-
-    private void UpdateConfiguration()
-    {
+    private void UpdateConfiguration() {
         localStorage.SetItemAsync<Configuration>("IncomeConfiguration", configuration);
+    }
+
+    void DeleteData() {
+        localStorage.ClearAsync();
+        configuration = new Configuration();
+    }
+
+    private string CurrencyFormatter(decimal currency) {
+        return $"{currency.ToString("0,0.00", CultureInfo.InvariantCulture)} {configuration.Currency}";
     }
 }

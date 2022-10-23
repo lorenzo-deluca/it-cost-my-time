@@ -13,26 +13,28 @@ namespace it_cost_my_time.Services
             IncomeConfiguration = incomeConfiguration;
         }
 
+        /*
         public decimal YearlyIncome
         {
             get
             {
                 if (IncomeConfiguration.IncomeTypeSelect)
                 {
-                    return IncomeConfiguration.Income;
+                    return IncomeConfiguration.YearlyIncome;
                 }
                 else
                 {
-                    return (IncomeConfiguration.Income * IncomeConfiguration.PayMonths);
+                    return (IncomeConfiguration.YearlyIncome * IncomeConfiguration.PayMonths);
                 }
             }
         }
+        */
 
         public decimal YearlySavings
         {
             get
             {
-                return (decimal)(YearlyIncome / 100) * IncomeConfiguration.SavingRate;
+                return (decimal)(IncomeConfiguration.YearlyIncome / 100) * IncomeConfiguration.SavingRate;
             }
         }
 
@@ -60,6 +62,7 @@ namespace it_cost_my_time.Services
             }
         }
 
+        /*
         public decimal MonthlyIncome
         {
             get
@@ -67,7 +70,7 @@ namespace it_cost_my_time.Services
                 return (YearlyIncome / 12);
             }
         }
-
+        */
         public decimal DailySaving
         {
             get
@@ -80,7 +83,7 @@ namespace it_cost_my_time.Services
         {
             get
             {
-                return YearlyIncome / TotalWorkingDays;
+                return IncomeConfiguration.YearlyIncome / TotalWorkingDays;
             }
         }
 
@@ -96,7 +99,7 @@ namespace it_cost_my_time.Services
         {
             get
             {
-                return YearlyIncome / TotalWorkingHours;
+                return IncomeConfiguration.YearlyIncome / TotalWorkingHours;
             }
         }
 
