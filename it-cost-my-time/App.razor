@@ -15,7 +15,7 @@
     <MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="DeleteData" Color="Color.Error">Delete Data</MudButton>
         <MudSpacer />
-        <MudChip Color="Color.Success">It Cost Me Time, personal finance calculator</MudChip>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Dense="true" ContentAlignment="HorizontalAlignment.Center" Elevation="10">Data are saved only in your browser!</MudAlert>
         <MudSpacer />
         <MudSelect @onchange="UpdateConfiguration" T="string" Label="Currency" @bind-Value="@configuration.Currency">
             <MudSelectItem Value="@("€")" />
@@ -37,11 +37,11 @@
                 </div>
             </TitleContent>
             <ChildContent>
-                <MudSwitch @onchange="UpdateConfiguration" @bind-Checked="@configuration.IncomeType" Label="Income Type" Color="Color.Success" />
+                <MudSwitch @bind-Checked="@configuration.IncomeType" Label="Income Type" Color="Color.Success" />
                 @if (!configuration.IncomeType)
                 {
                     <MudNumericField @onchange="UpdateConfiguration" DefaultFocus="DefaultFocus" @bind-Value="configuration.MonthlyIncome" Label="Monthly Income (after tax)" Variant="Variant.Outlined" Step=".2M" Adornment="Adornment.End" AdornmentText="@configuration.Currency" AdornmentColor="Color.Info" />
-                    <MudSelect T="int" Label="Monthly Payments" Clearable="false" @onchange="UpdateConfiguration" @bind-Value="@configuration.PayMonths">
+                    <MudSelect @onchange="UpdateConfiguration" T="int" Label="Monthly Payments" Clearable="false" @bind-Value="@configuration.PayMonths">
                         @for (int month = 10; month <= 15; month++)
                         {
                             <MudSelectItem Value="@month" />
@@ -88,12 +88,12 @@
         @if (calculateService.CalculateItemTimeCost(Amount).hours > 40)
         {
             <MudText Typo="Typo.h1">@calculateService.CalculateItemTimeCost(Amount).days.ToString("0.00") </MudText>
-            <small>working days saving</small>
+            <MudText Typo="Typo.h4">working days saving</MudText>
         }
         else
         {
             <MudText Typo="Typo.h1">@calculateService.CalculateItemTimeCost(Amount).hours.ToString("0.00")</MudText>
-            <small>working hours saving</small>
+            <MudText Typo="Typo.h5">working hours saving</MudText>
         }
 
         </MudCardContent>

@@ -1,6 +1,4 @@
 ﻿using it_cost_my_time.Entities;
-using Microsoft.Extensions.Configuration;
-using System.Runtime.CompilerServices;
 
 namespace it_cost_my_time.Services
 {
