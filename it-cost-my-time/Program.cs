@@ -12,5 +12,6 @@ builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage(config =>
        config.JsonSerializerOptions.WriteIndented = true
    );
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
 await builder.Build().RunAsync();

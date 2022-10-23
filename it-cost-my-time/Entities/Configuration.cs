@@ -2,7 +2,7 @@
 
 namespace it_cost_my_time.Entities
 {
-    public class IncomeConfiguration
+    public class Configuration
     {
         public decimal Income { get; set; } = 30000;
         public int WorkingDays { get; set; } = 5;
@@ -10,7 +10,9 @@ namespace it_cost_my_time.Entities
         public int PayMonths { get; set; } = 13;
         public decimal SavingRate { get; set; } = 50;
 
-        private bool _incomeType;
+        private bool _incomeType = true;
+
+        public string Currency { get; set; } = "€";
 
         public bool IncomeTypeSelect
         {
@@ -44,14 +46,15 @@ namespace it_cost_my_time.Entities
             }
         }
 
-        public void ReadConfiguration(IncomeConfiguration configuration)
+        public void ReadConfiguration(Configuration configuration)
         {
-            this.Income = configuration.Income;
-            this._incomeType = configuration.IncomeTypeSelect;
-            this.WorkingDays = configuration.WorkingDays;
-            this.WorkingHours = configuration.WorkingHours;
-            this.PayMonths = configuration.PayMonths;
-            this.SavingRate = configuration.SavingRate; 
+            Income = configuration.Income;
+            _incomeType = configuration.IncomeTypeSelect;
+            WorkingDays = configuration.WorkingDays;
+            WorkingHours = configuration.WorkingHours;
+            PayMonths = configuration.PayMonths;
+            SavingRate = configuration.SavingRate;
+            Currency = configuration.Currency;
         }
     }
 }

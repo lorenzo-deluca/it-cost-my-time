@@ -6,9 +6,9 @@ namespace it_cost_my_time.Services
 {
     public class CalculateService
     {
-        private readonly IncomeConfiguration IncomeConfiguration;
+        private readonly Configuration IncomeConfiguration;
 
-        public CalculateService(IncomeConfiguration incomeConfiguration)
+        public CalculateService(Configuration incomeConfiguration)
         {
             IncomeConfiguration = incomeConfiguration;
         }
