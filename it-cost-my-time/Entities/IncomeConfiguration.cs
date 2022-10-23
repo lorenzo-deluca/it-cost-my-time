@@ -8,7 +8,6 @@
         public int PayMonths = 13;
 
         public decimal SavingRate = 50;
-        public decimal Amount = 100;
         public bool IncomeTypeSelect { get; set; } = true;
 
         public string IncomeType

@@ -4,6 +4,8 @@
 
 @using it_cost_my_time.Entities;
 @using it_cost_my_time.Services;
+@page "/"
+@inject NavigationManager Navigation
 
 <MudAppBar Color="Color.Primary" Fixed="false" Elevation="0">
 
@@ -57,7 +59,7 @@
 
 </MudExpansionPanels>
 
-<MudTextField @bind-Value="configuration.Amount" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
+<MudTextField @bind-Value="Amount" Size="Size.Large" Label="Item Cost" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning" />
 
 <MudText Typo="Typo.h5">This item cost you </MudText>
 
@@ -73,9 +75,19 @@
     public decimal Amount = 100;
     (decimal Hours, decimal Days) ItemCosts;
 
-
     public App()
     {
         calculateService = new CalculateService(configuration);
+    }
+
+    protected override void OnInitialized()
+    {
+        string query = Navigation.ToAbsoluteUri(Navigation.Uri).Query;        
+        if (!string.IsNullOrWhiteSpace(query) && query.Split('?').Count() > 1 && query.Split('?')[1].Split('=').Count() > 0)
+        {
+            // parse amount in url parameters
+            Amount = decimal.TryParse(query.Split('?')[1].Split('=')[1], out Amount) ? Amount : 0;
+        }
+
     }
 }
