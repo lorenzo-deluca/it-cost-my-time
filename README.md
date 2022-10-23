@@ -2,7 +2,7 @@
 This simple personal finance web-app allows you to calculate **how much time it costs you to purchase an item**.
 
 You can find the application already working at
-[https://lorenzo-deluca.github.io/it-cost-my-time/](https://lorenzo-deluca.github.io/it-cost-my-time/){:target="_blank"}
+[https://lorenzo-deluca.github.io/it-cost-my-time/](https://lorenzo-deluca.github.io/it-cost-my-time/){:target="_blank" rel="noopener"}
 
 If you like this project you can support me with :coffee: or simply put a :star: to this repository :blush:
 
